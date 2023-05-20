@@ -20,11 +20,6 @@ namespace Library
 		[ForeignKey("LibraryMember")]
 		public int InvNumber { get; set; }
 		public DateTime LoanDate { get; set; }
-
-		[Compare(nameof(LoanDate), ErrorMessage = "Return deadline must be later than the loan date.")]
 		public DateTime returnDeadline{ get; set; }
-
-		public virtual ICollection<Book> Books { get; set; }
-		public virtual ICollection<LibraryMember> LibraryMembers { get; set; }
 	}
 }

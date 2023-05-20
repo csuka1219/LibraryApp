@@ -15,7 +15,7 @@ namespace Library
 		public int ReaderNumber { get; set; }
 
 		[Required(ErrorMessage = "Name is required")]
-		[RegularExpression(@"^[^\s!?_-:;#]+$", ErrorMessage = "Name cannot contain special characters")]
+		[RegularExpression(@"^[^\s!?_\-:;#]+$", ErrorMessage = "Name cannot contain special characters")]
 		public string Name { get; set; }
 		public string Address { get; set; }
 
