@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrarianClient", "Libraria
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReaderClient", "ReaderClient\ReaderClient.csproj", "{BEC65A5D-8464-4E12-9897-75F514488CD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{B143ADC9-A93D-432B-8E56-2BAD3E827A5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library", "Library\Library.csproj", "{B143ADC9-A93D-432B-8E56-2BAD3E827A5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryWebApiTests", "LibraryWebApiTests\LibraryWebApiTests.csproj", "{1F86D641-F7A3-4ADF-93A1-A54E0EF5AF1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryWebApiTests", "LibraryWebApiTests\LibraryWebApiTests.csproj", "{1F86D641-F7A3-4ADF-93A1-A54E0EF5AF1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
