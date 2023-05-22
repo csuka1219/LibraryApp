@@ -3,6 +3,7 @@
 // </copyright>
 
 using LibrarianClient;
+using LibrarianClient.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -12,6 +13,10 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMudServices();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7096/api/") });
+
+builder.Services.AddScoped<ILibraryMemberService, LibraryMemberService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 await builder.Build().RunAsync();
