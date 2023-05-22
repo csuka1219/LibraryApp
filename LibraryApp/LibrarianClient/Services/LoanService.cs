@@ -12,7 +12,7 @@ namespace LibrarianClient.Services
             _httpClient = httpClient;
         }
 
-        public Task<List<Loan>?> GetAllLoanAsync() =>
+        public Task<List<Loan>> GetAllLoanAsync() =>
             _httpClient.GetFromJsonAsync<List<Loan>>("Loan");
 
         public Task<Loan?> GetLoanByIdAsync(int id) =>

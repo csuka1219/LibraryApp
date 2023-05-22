@@ -1,0 +1,62 @@
+﻿@page "/Members"
+
+<MudPaper Elevation="5">
+	<div class="mud-card-content">
+		<MudTable Items="@libraryMembers" Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
+			<ToolBarContent>
+				<MudText Typo="Typo.h6">Tagok</MudText>
+				<MudFab Color="Color.Primary" Style="margin-left: 10px;" OnClick='()=>NavManager.NavigateTo("Members/Member")' Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" />
+			</ToolBarContent>
+			<HeaderContent>
+				<MudTh></MudTh>
+				<MudTh>Olvasószám</MudTh>
+				<MudTh>Név</MudTh>
+				<MudTh>Lakcím</MudTh>
+				<MudTh>Születési idő</MudTh>
+				<MudTh></MudTh>
+			</HeaderContent>
+			<RowTemplate>
+				<MudTd>
+					<MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => {extraInfoHelper[context.ReaderNumber] =! extraInfoHelper[context.ReaderNumber];})">@((extraInfoHelper[context.ReaderNumber] == false) ? "Több" : "Kevesebb") mutatása</MudButton>
+				</MudTd>
+				<MudTd DataLabel="OlvasóSzám">@context.ReaderNumber</MudTd>
+				<MudTd DataLabel="Név">@context.Name</MudTd>
+				<MudTd DataLabel="Lakcím">@context.Address</MudTd>
+				<MudTd DataLabel="Születési idő">@context.BirthDate.ToShortDateString()</MudTd>
+				<MudTd DataLabel="" Style="text-align:end">
+					<MudFab Color="Color.Error" OnClick="()=>DeleteMember(context)" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" />
+				</MudTd>
+			</RowTemplate>
+			<ChildRowContent>
+				@if (extraInfoHelper[context.ReaderNumber] == true)
+				{
+						<td colspan="12">
+							<MudCard Elevation="0">
+								<MudCardHeader>
+									<CardHeaderContent>
+										<MudText Typo="Typo.body1">Kölcsönzési Adatok: <strong>@context.Name</strong></MudText>
+									</CardHeaderContent>
+								</MudCardHeader>
+								<MudCardContent Class="pa-0">
+									<MudTable Items="@loanDatas.Where(ld=>ld.ReaderId == context.ReaderNumber)" Context="loanDataContext" Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
+										<HeaderContent>
+											<MudTh>Cím</MudTh>
+											<MudTh>Kölcsönzés ideje</MudTh>
+											<MudTh>Kölcsönzés határideje</MudTh>
+											<MudTh></MudTh>
+										</HeaderContent>
+										<RowTemplate>
+											<MudTd DataLabel="Cím">@loanDataContext.Title</MudTd>
+											<MudTd DataLabel="Kölcsönzés ideje">@loanDataContext.LoanDate</MudTd>
+											<MudTd DataLabel="Kölcsönzés határideje">@loanDataContext.ReturnDeadline</MudTd>
+											<MudTd Style="font-size: x-large;color: red !important;" DataLabel="">@GetReturnDateWarning(loanDataContext.ReturnDeadline)</MudTd>
+										</RowTemplate>
+									</MudTable>
+								</MudCardContent>
+							</MudCard>
+						</td>
+				}
+			</ChildRowContent>
+		</MudTable>
+	</div>
+</MudPaper>

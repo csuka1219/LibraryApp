@@ -1,0 +1,25 @@
+﻿@page "/Members/Member"
+
+<MudPaper Elevation="5">
+    <div class="mud-card-content">
+        <EditForm Model="@member" OnValidSubmit="SaveMember">
+            <DataAnnotationsValidator/>
+            <MudGrid>
+                <MudItem xs="12" sm="12" md="8" lg="4" xl="4" xxl="4">
+                    <MudTextField Label="Név"
+                                  @bind-Value="member.Name" For="@(() => member.Name)" />
+                </MudItem>
+                <MudItem xs="12" sm="12" md="8" lg="4" xl="4" xxl="4">
+                    <MudTextField Label="Lakcím"
+                                  @bind-Value="member.Address" For="@(() => member.Address)" />
+                </MudItem>
+                <MudItem xs="12" sm="12" md="8" lg="4" xl="4" xxl="4">
+                    <MudDatePicker Label="Születési idő" @bind-Date="tmpBirthDay" MinDate="new DateTime(1900, 1, 1)" MaxDate="new DateTime(2020, 12, 31)" />
+                </MudItem>
+                <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Mentés</MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </div>
+</MudPaper>

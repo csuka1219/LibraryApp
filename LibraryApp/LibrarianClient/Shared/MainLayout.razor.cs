@@ -25,7 +25,10 @@ namespace LibrarianClient.Shared
                 AppbarBackground = "#263238ff",
                 DrawerText = "#FFFFFF",
                 DrawerIcon = "#FFFFFF",
-            },
+                Surface = "#263238ff",
+                TableStriped = "#37474fff",
+                TableLines = "#424242ff",
+			},
         };
 
         private void ToggleDrawer()

@@ -4,7 +4,7 @@ namespace LibrarianClient.Services
 {
     public interface ILoanService
     {
-        Task<List<Loan>?> GetAllLoanAsync();
+        Task<List<Loan>> GetAllLoanAsync();
 
         Task<Loan?> GetLoanByIdAsync(int id);
 
