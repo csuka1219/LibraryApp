@@ -1,0 +1,52 @@
+﻿<MudDialog>
+	<TitleContent>
+		<MudText Typo="Typo.h6">
+			Részletek
+		</MudText>
+	</TitleContent>
+	<DialogContent>
+		<MudGrid>
+			<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+				<MudTextField ReadOnly Label="Státusz" Value="@bookDetails!.Status"></MudTextField>
+				</MudItem>
+				<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+				@if (bookDetails!.Renter is not null)
+				{
+					<MudTextField ReadOnly Label="Kivette" Value="@bookDetails.Renter"></MudTextField>
+				}
+			</MudItem>
+			<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+				@if (bookDetails!.DeadLine is not null)
+				{
+					<MudTextField ReadOnly Label="Határidő" Value="@bookDetails.DeadLine"></MudTextField>
+				}
+			</MudItem>
+		</MudGrid>
+	</DialogContent>
+	<DialogActions>
+		<MudButton Variant="Variant.Filled" OnClick="Cancel" Color="Color.Info">Bezár</MudButton>
+	</DialogActions>
+</MudDialog>
+
+@code{
+	[CascadingParameter]
+
+	MudDialogInstance? MudDialog { get; set; }
+
+	[Parameter] 
+
+	public BookDetails? bookDetails { get; set; }
+
+	protected override void OnInitialized()
+	{
+		if (bookDetails is null)
+		{
+			Cancel();
+		}
+	}
+
+	private void Cancel()
+	{
+		MudDialog!.Cancel();
+	}
+}

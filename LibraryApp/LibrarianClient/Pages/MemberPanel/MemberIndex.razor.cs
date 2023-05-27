@@ -38,9 +38,9 @@ namespace LibrarianClient.Pages.MemberPanel
 
         private async Task FillLoanData()
         {
-            List<Loan> loans = await LoanService!.GetAllLoanAsync();
+            List<Loan>? loans = await LoanService!.GetAllLoanAsync();
 
-            // TODO az összes könyv lekérése helyett egy plusz controller
+            // TODO az összes könyv lekérése helyett egy plusz végpont, ami csak a kiadott könyveket adja vissza
             List<Book>? books = await BookService!.GetAllBookAsync();
             if (books is not null && loans is not null)
             {

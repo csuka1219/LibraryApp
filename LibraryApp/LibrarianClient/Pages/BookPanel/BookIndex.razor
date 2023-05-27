@@ -1,0 +1,33 @@
+﻿@page "/Books"
+<MudPaper Elevation="5">
+	<div class="mud-card-content">
+		<MudTable Items="@books" Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
+			<ToolBarContent>
+				<MudText Typo="Typo.h6">Könyvek</MudText>
+				<MudFab Color="Color.Primary" Style="margin-left: 10px;" OnClick="AddBook" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" />
+					<MudSpacer/>
+				<MudTextField T="string" ValueChanged="@(s=>OnBookSearch(s))" Placeholder="Keresés" Adornment="Adornment.Start"
+							  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+			</ToolBarContent>
+			<HeaderContent>
+				<MudTh>Leltári szám</MudTh>
+				<MudTh>Cím</MudTh>
+				<MudTh>Író</MudTh>
+				<MudTh>Kiadó</MudTh>
+				<MudTh>Megjelenés Éve</MudTh>
+				<MudTh></MudTh>
+			</HeaderContent>
+			<RowTemplate>
+				<MudTd DataLabel="Leltári szám">@context.InvNumber</MudTd>
+				<MudTd DataLabel="Cím">@context.Title</MudTd>
+				<MudTd DataLabel="Író">@context.Author</MudTd>
+				<MudTd DataLabel="Kiadó">@context.Publisher</MudTd>
+				<MudTd DataLabel="Megjelenés Éve">@context.Year</MudTd>
+				<MudTd DataLabel="" Style="text-align:end">
+					<MudFab Color="Color.Info" OnClick='()=>GetBookDetails(context.InvNumber)' Size="Size.Small" StartIcon="@Icons.Material.Filled.RemoveRedEye" />
+					<MudFab Color="Color.Error" OnClick = '()=>DeleteBook(context)' Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" />
+				</MudTd>
+			</RowTemplate>
+		</MudTable>
+	</div>
+</MudPaper>

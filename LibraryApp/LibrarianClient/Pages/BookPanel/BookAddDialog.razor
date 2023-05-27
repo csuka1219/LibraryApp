@@ -1,0 +1,56 @@
+﻿@using Library;
+<MudDialog>
+	<TitleContent>
+		<MudText Typo="Typo.h6">
+			Könyv hozzáadása
+		</MudText>
+	</TitleContent>
+	<DialogContent>
+		<MudGrid>
+			<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+				<MudTextField Label="Könyv címe" @bind-Value="@book!.Title"></MudTextField>
+			</MudItem>
+			<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+				<MudTextField Label="Író" @bind-Value="@book!.Author"></MudTextField>
+			</MudItem>
+			<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+				<MudTextField Label="Kiadó" @bind-Value="@book!.Publisher"></MudTextField>
+			</MudItem>
+			<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+				<MudNumericField Label="Megjelenés éve" @bind-Value="@book!.Year"></MudNumericField>
+			</MudItem>
+		</MudGrid>
+	</DialogContent>
+	<DialogActions>
+		<MudButton Variant="Variant.Filled" OnClick="Cancel" Color="Color.Info">Bezár</MudButton>
+		<MudButton Variant="Variant.Filled" OnClick="Save" Color="Color.Primary">Mentés</MudButton>
+	</DialogActions>
+</MudDialog>
+
+@code {
+	[CascadingParameter]
+
+	MudDialogInstance? MudDialog { get; set; }
+
+	[Parameter]
+
+	public Book? book { get; set; }
+
+	protected override void OnInitialized()
+	{
+		if (book is null)
+		{
+			Cancel();
+		}
+	}
+
+	private void Cancel()
+	{
+		MudDialog!.Cancel();
+	}
+
+	private void Save()
+	{
+		MudDialog!.Close();
+	}
+}
