@@ -3,28 +3,31 @@ using Library;
 
 namespace LibrarianClient.Services
 {
-    public class BookService: IBookService
+    public class BookService : IBookService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient httpClient;
 
         public BookService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
+            this.httpClient = httpClient;
         }
 
         public Task<List<Book>?> GetAllBookAsync() =>
-            _httpClient.GetFromJsonAsync<List<Book>>("Book");
+            httpClient.GetFromJsonAsync<List<Book>>("Book");
 
         public Task<Book?> GetBookByIdAsync(int id) =>
-            _httpClient.GetFromJsonAsync<Book?>($"Book/{id}");
+            httpClient.GetFromJsonAsync<Book?>($"Book/{id}");
 
         public async Task UpdateBookAsync(int id, Book person) =>
-            await _httpClient.PutAsJsonAsync($"Book/{id}", person);
+            await httpClient.PutAsJsonAsync($"Book/{id}", person);
 
         public async Task DeleteBookAsync(int id) =>
-            await _httpClient.DeleteAsync($"Book/{id}");
+            await httpClient.DeleteAsync($"Book/{id}");
 
-        public async Task AddBookAsync(Book person) =>
-            await _httpClient.PostAsJsonAsync("Book", person);
+        public async Task<int> AddBookAsync(Book person)
+        {
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("Book", person);
+            return await response.Content.ReadFromJsonAsync<int>();
+        }
     }
 }

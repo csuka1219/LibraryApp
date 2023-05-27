@@ -37,8 +37,7 @@ namespace LibraryWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> AddBook(Book book)
         {
-            await _bookRepository.AddBookAsync(book);
-            return Ok();
+            return Ok(await _bookRepository.AddBookAsync(book));
         }
 
         [HttpPut("{id}")]

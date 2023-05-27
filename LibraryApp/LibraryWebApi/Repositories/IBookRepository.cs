@@ -8,7 +8,7 @@ namespace LibraryWebApi.Repositories
 
         Task<Book> GetBookByIdAsync(int id);
 
-        Task AddBookAsync(Book book);
+        Task<int> AddBookAsync(Book book);
 
         Task UpdateBookAsync(Book book);
 

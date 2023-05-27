@@ -23,10 +23,11 @@ namespace LibraryWebApi.Repositories
             return await _context.Books.FindAsync(id);
         }
 
-        public async Task AddBookAsync(Book book)
+        public async Task<int> AddBookAsync(Book book)
         {
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
+            return await _context.Books.MaxAsync(b => b.InvNumber);
         }
 
         public async Task UpdateBookAsync(Book book)

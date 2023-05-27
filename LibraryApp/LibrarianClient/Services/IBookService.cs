@@ -12,6 +12,6 @@ namespace LibrarianClient.Services
 
         Task DeleteBookAsync(int id);
 
-        Task AddBookAsync(Book person);
+        Task<int> AddBookAsync(Book person);
     }
 }
