@@ -13,5 +13,7 @@ namespace LibraryWebApi.Repositories
         Task UpdateLibraryMemberAsync(LibraryMember libraryMember);
 
         Task DeleteLibraryMemberAsync(LibraryMember libraryMember);
-    }
+
+		Task<List<LibraryMember>> GetActiveLibraryMembersAsync();
+	}
 }

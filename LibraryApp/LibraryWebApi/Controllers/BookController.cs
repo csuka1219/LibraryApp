@@ -64,5 +64,21 @@ namespace LibraryWebApi.Controllers
             await _bookRepository.DeleteBookAsync(book);
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("available")]
+        public async Task<ActionResult<List<Book>>> GetAvailableBooks()
+        {
+            var books = await _bookRepository.GetAvailableBooksAsync();
+            return Ok(books);
+        }
+
+        [HttpGet]
+        [Route("loaned")]
+        public async Task<ActionResult<List<Book>>> GetLoanedBooks()
+        {
+            var books = await _bookRepository.GetLoanedBooksAsync();
+            return Ok(books);
+        }
     }
 }

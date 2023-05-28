@@ -14,5 +14,8 @@ namespace LibraryWebApi.Repositories
 
         Task DeleteBookAsync(Book book);
 
-    }
+        Task<List<Book>> GetAvailableBooksAsync();
+
+		Task<List<Book>> GetLoanedBooksAsync();
+	}
 }

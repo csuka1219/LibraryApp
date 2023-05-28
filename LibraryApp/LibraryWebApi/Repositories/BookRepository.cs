@@ -41,5 +41,15 @@ namespace LibraryWebApi.Repositories
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Book>> GetAvailableBooksAsync()
+        {
+            return await _context.Books.Where(b => !_context.Loans.Select(l => l.InvNumber).Contains(b.InvNumber)).ToListAsync();
+        }
+
+        public async Task<List<Book>> GetLoanedBooksAsync()
+        {
+            return await _context.Books.Where(b => _context.Loans.Select(l => l.InvNumber).Contains(b.InvNumber)).ToListAsync();
+        }
     }
 }

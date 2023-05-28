@@ -40,5 +40,10 @@ namespace LibraryWebApi.Repositories
             _context.LibraryMembers.Remove(libraryMember);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<LibraryMember>> GetActiveLibraryMembersAsync()
+        {
+            return await _context.LibraryMembers.Where(lm => _context.Loans.Select(l => l.ReaderNumber).Contains(lm.ReaderNumber)).ToListAsync();
+        }
     }
 }

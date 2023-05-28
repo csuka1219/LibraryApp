@@ -65,5 +65,13 @@ namespace LibraryWebApi.Controllers
             await _libraryMemberRepository.DeleteLibraryMemberAsync(member);
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("active")]
+        public async Task<ActionResult<List<LibraryMember>>> GetActiveLibraryMembers()
+        {
+            var members = await _libraryMemberRepository.GetActiveLibraryMembersAsync();
+            return Ok(members);
+        }
     }
 }
