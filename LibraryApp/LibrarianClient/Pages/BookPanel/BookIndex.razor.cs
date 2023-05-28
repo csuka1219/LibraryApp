@@ -13,8 +13,6 @@ namespace LibrarianClient.Pages.BookPanel
         private List<LibraryMember> members = new List<LibraryMember>();
         private BookDetails bookDetails = new BookDetails("Raktáron");
 
-        private MudMessageBox? MessageBox { get; set; }
-
         [Inject]
         private IBookService? BookService { get; set; }
 
@@ -31,7 +29,7 @@ namespace LibrarianClient.Pages.BookPanel
         {
             books = await BookService!.GetAllBookAsync() ?? new List<Book>();
             loans = await LoanService!.GetAllLoanAsync() ?? new List<Loan>();
-            members = await LibraryMemberService!.GetAllLibraryMemberAsync() ?? new List<LibraryMember>();
+            members = await LibraryMemberService!.GetActiveLibraryMembersAsync() ?? new List<LibraryMember>();
             booksBackUp = new List<Book>(books);
         }
 

@@ -14,6 +14,8 @@ namespace LibrarianClient.Services
 
         public Task<List<LibraryMember>?> GetAllLibraryMemberAsync() =>
             _httpClient.GetFromJsonAsync<List<LibraryMember>>("LibraryMember");
+        public Task<List<LibraryMember>?> GetActiveLibraryMembersAsync() =>
+            _httpClient.GetFromJsonAsync<List<LibraryMember>>("LibraryMember/active");
 
         public Task<LibraryMember?> GetLibraryMemberByIdAsync(int id) =>
             _httpClient.GetFromJsonAsync<LibraryMember?>($"LibraryMember/{id}");
