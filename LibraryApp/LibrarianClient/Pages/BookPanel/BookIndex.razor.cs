@@ -64,7 +64,7 @@ namespace LibrarianClient.Pages.BookPanel
             Book book = new Book();
             DialogParameters parameters = new DialogParameters { ["book"] = book };
 
-            IDialogReference dialog = await DialogService!.ShowAsync<BookAddDialog>("Részletek", parameters);
+            IDialogReference dialog = await DialogService!.ShowAsync<BookAddDialog>("Hozzáadás", parameters);
 
             DialogResult result = await dialog.Result;
 

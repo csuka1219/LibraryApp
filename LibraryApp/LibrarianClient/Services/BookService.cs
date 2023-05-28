@@ -15,13 +15,13 @@ namespace LibrarianClient.Services
         public Task<List<Book>?> GetAllBookAsync() =>
             httpClient.GetFromJsonAsync<List<Book>>("Book");
 
-		public Task<List<Book>?> GetAvailableBooksAsync() =>
-			httpClient.GetFromJsonAsync<List<Book>>("Book/available");
-        
-        public Task<List<Book>?> GetLoanedBooksAsync() =>
-			httpClient.GetFromJsonAsync<List<Book>>("Book/loaned");
+        public Task<List<Book>?> GetAvailableBooksAsync() =>
+            httpClient.GetFromJsonAsync<List<Book>>("Book/available");
 
-		public Task<Book?> GetBookByIdAsync(int id) =>
+        public Task<List<Book>?> GetLoanedBooksAsync() =>
+            httpClient.GetFromJsonAsync<List<Book>>("Book/loaned");
+
+        public Task<Book?> GetBookByIdAsync(int id) =>
             httpClient.GetFromJsonAsync<Book?>($"Book/{id}");
 
         public async Task UpdateBookAsync(int id, Book person) =>

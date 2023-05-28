@@ -5,6 +5,7 @@ namespace LibrarianClient.Services
     public interface ILibraryMemberService
     {
         Task<List<LibraryMember>?> GetAllLibraryMemberAsync();
+
         Task<List<LibraryMember>?> GetActiveLibraryMembersAsync();
 
         Task<LibraryMember?> GetLibraryMemberByIdAsync(int id);
@@ -13,6 +14,6 @@ namespace LibrarianClient.Services
 
         Task DeleteLibraryMemberAsync(int id);
 
-        Task AddLibraryMemberAsync(LibraryMember person);
+        Task<int> AddLibraryMemberAsync(LibraryMember person);
     }
 }

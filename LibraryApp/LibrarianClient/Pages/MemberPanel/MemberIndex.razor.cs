@@ -1,6 +1,9 @@
-﻿using LibrarianClient.Services;
+﻿using LibrarianClient.Pages.BookPanel;
+using LibrarianClient.Services;
 using Library;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LibrarianClient.Pages.MemberPanel
 {
@@ -20,7 +23,7 @@ namespace LibrarianClient.Pages.MemberPanel
         private ILoanService? LoanService { get; set; }
 
         [Inject]
-        private NavigationManager? NavManager { get; set; }
+        private IDialogService? DialogService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,8 +43,7 @@ namespace LibrarianClient.Pages.MemberPanel
         {
             List<Loan>? loans = await LoanService!.GetAllLoanAsync();
 
-            // TODO az összes könyv lekérése helyett egy plusz végpont, ami csak a kiadott könyveket adja vissza
-            List<Book>? books = await BookService!.GetAllBookAsync();
+            List<Book>? books = await BookService!.GetLoanedBooksAsync();
             if (books is not null && loans is not null)
             {
                 foreach (Loan loan in loans)
@@ -54,6 +56,26 @@ namespace LibrarianClient.Pages.MemberPanel
                         ReturnDeadline = loan.returnDeadline,
                     });
                 }
+            }
+        }
+
+        private async void AddMember()
+        {
+            LibraryMember member = new LibraryMember();
+            DialogParameters parameters = new DialogParameters { ["Member"] = member };
+
+            IDialogReference dialog = await DialogService!.ShowAsync<MemberAddDialog>("Hozzáadás", parameters);
+
+            DialogResult result = await dialog.Result;
+
+            if (!result.Canceled)
+            {
+                int newReaderNumber = await LibraryMemberService!.AddLibraryMemberAsync(member);
+                StateHasChanged();
+                member.ReaderNumber = newReaderNumber;
+                libraryMembers!.Add(member);
+                extraInfoHelper.Add(member.ReaderNumber, false);
+                StateHasChanged();
             }
         }
 

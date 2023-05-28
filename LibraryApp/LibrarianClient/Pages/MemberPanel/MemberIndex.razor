@@ -5,7 +5,7 @@
 		<MudTable Items="@libraryMembers" Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
 			<ToolBarContent>
 				<MudText Typo="Typo.h6">Tagok</MudText>
-				<MudFab Color="Color.Primary" Style="margin-left: 10px;" OnClick='()=>NavManager.NavigateTo("Members/Member")' Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" />
+				<MudFab Color="Color.Primary" Style="margin-left: 10px;" OnClick='()=>AddMember()' Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" />
 			</ToolBarContent>
 			<HeaderContent>
 				<MudTh></MudTh>

@@ -37,8 +37,7 @@ namespace LibraryWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<LibraryMember>> AddLibraryMember(LibraryMember member)
         {
-            await _libraryMemberRepository.AddLibraryMemberAsync(member);
-            return Ok();
+            return Ok(await _libraryMemberRepository.AddLibraryMemberAsync(member));
         }
 
         [HttpPut("{id}")]

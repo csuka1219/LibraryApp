@@ -23,10 +23,11 @@ namespace LibraryWebApi.Repositories
             return await _context.LibraryMembers.FindAsync(id);
         }
 
-        public async Task AddLibraryMemberAsync(LibraryMember libraryMember)
+        public async Task<int> AddLibraryMemberAsync(LibraryMember libraryMember)
         {
             _context.LibraryMembers.Add(libraryMember);
             await _context.SaveChangesAsync();
+            return await _context.LibraryMembers.MaxAsync(b => b.ReaderNumber);
         }
 
         public async Task UpdateLibraryMemberAsync(LibraryMember libraryMember)

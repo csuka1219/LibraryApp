@@ -8,7 +8,7 @@ namespace LibraryWebApi.Repositories
 
         Task<LibraryMember> GetLibraryMemberByIdAsync(int id);
 
-        Task AddLibraryMemberAsync(LibraryMember libraryMember);
+        Task<int> AddLibraryMemberAsync(LibraryMember libraryMember);
 
         Task UpdateLibraryMemberAsync(LibraryMember libraryMember);
 
