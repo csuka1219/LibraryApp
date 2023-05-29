@@ -24,7 +24,8 @@
 				<MudTd DataLabel="Lakcím">@context.Address</MudTd>
 				<MudTd DataLabel="Születési idő">@context.BirthDate.ToShortDateString()</MudTd>
 				<MudTd DataLabel="" Style="text-align:end">
-					<MudFab Color="Color.Error" OnClick="()=>DeleteMember(context)" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" />
+					<MudFab Color="Color.Info" OnClick="() => EditMember(context)" Size="Size.Small" StartIcon="@Icons.Material.Filled.Build" />
+					<MudFab Color="Color.Error" OnClick="() => DeleteMember(context)" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" />
 				</MudTd>
 			</RowTemplate>
 			<ChildRowContent>

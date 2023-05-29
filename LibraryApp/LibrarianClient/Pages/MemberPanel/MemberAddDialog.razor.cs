@@ -36,6 +36,7 @@ namespace LibrarianClient.Pages.MemberPanel
 
         private async void Save()
         {
+            Member!.BirthDate = tmpBirthDay!.Value;
             await form!.Validate();
             if (!success)
             {

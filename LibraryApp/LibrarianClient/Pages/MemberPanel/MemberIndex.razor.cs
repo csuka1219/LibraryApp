@@ -62,6 +62,7 @@ namespace LibrarianClient.Pages.MemberPanel
         private async void AddMember()
         {
             LibraryMember member = new LibraryMember();
+            member.ReaderNumber = 0;
             DialogParameters parameters = new DialogParameters { ["Member"] = member };
 
             IDialogReference dialog = await DialogService!.ShowAsync<MemberAddDialog>("Hozzáadás", parameters);
@@ -71,10 +72,24 @@ namespace LibrarianClient.Pages.MemberPanel
             if (!result.Canceled)
             {
                 int newReaderNumber = await LibraryMemberService!.AddLibraryMemberAsync(member);
-                StateHasChanged();
                 member.ReaderNumber = newReaderNumber;
                 libraryMembers!.Add(member);
                 extraInfoHelper.Add(member.ReaderNumber, false);
+                StateHasChanged();
+            }
+        }
+
+        private async void EditMember(LibraryMember member)
+        {
+            DialogParameters parameters = new DialogParameters { ["Member"] = member };
+
+            IDialogReference dialog = await DialogService!.ShowAsync<MemberAddDialog>("Szerkesztés", parameters);
+
+            DialogResult result = await dialog.Result;
+
+            if (!result.Canceled)
+            {
+                await LibraryMemberService!.UpdateLibraryMemberAsync(member.ReaderNumber, member);
                 StateHasChanged();
             }
         }

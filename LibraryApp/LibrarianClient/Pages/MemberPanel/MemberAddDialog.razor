@@ -2,9 +2,18 @@
 
 <MudDialog>
 	<TitleContent>
-		<MudText Typo="Typo.h6">
-			Tag hozzáadása
-		</MudText>
+        @if (Member!.ReaderNumber == 0)
+        {
+		    <MudText Typo="Typo.h6">
+                Tag hozzáadása
+            </MudText>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6">
+                Tag szerkesztése
+            </MudText>
+        }
 	</TitleContent>
 	<DialogContent>
         <MudForm Model="@Member" @ref="form" @bind-IsValid="success">

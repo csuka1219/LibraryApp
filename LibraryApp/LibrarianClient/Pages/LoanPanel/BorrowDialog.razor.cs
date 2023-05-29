@@ -31,7 +31,7 @@ namespace LibrarianClient.Pages.LoanPanel
             MudDialog!.Cancel();
         }
 
-        private async void Save()
+        private void Save()
         {
             Loan!.returnDeadline = tmpReturnDeadLine!.Value;
             if (!success)
