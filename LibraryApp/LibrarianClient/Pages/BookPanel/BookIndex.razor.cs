@@ -1,4 +1,6 @@
-﻿using LibrarianClient.Services;
+﻿using EventAggregator.Blazor;
+using LibrarianClient.Data;
+using LibrarianClient.Services;
 using Library;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -25,12 +27,17 @@ namespace LibrarianClient.Pages.BookPanel
         [Inject]
         private IDialogService? DialogService { get; set; }
 
+        [Inject]
+        private IEventAggregator? EventHandler { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
+            await FrontendHelper.StartLoading(EventHandler!);
             books = await BookService!.GetAllBookAsync() ?? new List<Book>();
             loans = await LoanService!.GetAllLoanAsync() ?? new List<Loan>();
             members = await LibraryMemberService!.GetActiveLibraryMembersAsync() ?? new List<LibraryMember>();
             booksBackUp = new List<Book>(books);
+            await FrontendHelper.StopLoading(EventHandler!);
         }
 
         private void OnBookSearch(string text)
@@ -70,42 +77,25 @@ namespace LibrarianClient.Pages.BookPanel
 
             if (!result.Canceled)
             {
+                await FrontendHelper.StartLoading(EventHandler!);
                 int newInvNumber = await BookService!.AddBookAsync(book);
                 StateHasChanged();
                 book.InvNumber = newInvNumber;
                 books.Add(book);
                 booksBackUp.Add(book);
                 StateHasChanged();
+                await FrontendHelper.StopLoading(EventHandler!);
             }
         }
 
         private async void DeleteBook(Book book)
         {
+            await FrontendHelper.StartLoading(EventHandler!);
             await BookService!.DeleteBookAsync(book.InvNumber);
             books.Remove(book);
             booksBackUp.Remove(book);
             StateHasChanged();
+            await FrontendHelper.StopLoading(EventHandler!);
         }
-    }
-
-    public class BookDetails
-    {
-        public BookDetails(string status)
-        {
-            Status = status;
-        }
-
-        public BookDetails(string status, string renter, DateTime deadline)
-        {
-            Status = status;
-            Renter = renter;
-            DeadLine = deadline;
-        }
-
-        public string Status { get; set; }
-
-        public string? Renter { get; set; }
-
-        public DateTime? DeadLine { get; set; }
     }
 }

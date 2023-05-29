@@ -1,40 +1,43 @@
-﻿@inherits LayoutComponentBase
+﻿@using LibrarianClient.Component
+@inherits LayoutComponentBase
 
 <MudThemeProvider Theme="myCustomTheme" IsDarkMode="true"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="5">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-        <MudSpacer />
-        <MudText Class="align-self-center pt-2" Style="text-align: center; font-size:30px" Color="Color.Secondary">Könyvtár Menedzser</MudText>
-        <MudSpacer />
-        <MudImage Src="Images/Logo.png" Width="50" Height="40" Alt="Logo" Class="rounded-lg" />
-    </MudAppBar>
-    <MudDrawer @bind-Open="@isDrawerOpen" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Mini">
-        <MudDrawerHeader Class="d-flex flex-column align-self-center">
-            <div Class="py-5">
-                <MudAvatar Size="Size.Large" Class="align-self-center" Style="@GetAvatarSize()" Color="Color.Secondary" Variant="Variant.Filled">
-                    <MudIcon Color="Color.Warning" Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" />
-                </MudAvatar>
-                @if (isDrawerOpen)
-                {
-                    <MudText Class="align-self-center pt-2" Style="text-align: center;" Color="Color.Secondary">Admin</MudText>
-                }
-            </div>
-        </MudDrawerHeader>
-        <MudNavMenu Color="Color.Success">
-            <MudNavLink Href="/Members" Icon="@Icons.Material.Filled.MenuBook" Match="NavLinkMatch.Prefix">Tagok</MudNavLink>
-            <MudNavLink Href="/Books" Icon="@Icons.Material.Filled.Person" Match="NavLinkMatch.All">Könyvek</MudNavLink>
-            <MudNavLink Href="/BookBorrow" Icon="@Icons.Material.Filled.ReadMore" Match="NavLinkMatch.All">Kiadás</MudNavLink>
-        </MudNavMenu>
-    </MudDrawer>
-    <MudMainContent Class="pt-16 px-16">
-        <MudContainer Class="mt-6">
-            @Body
-        </MudContainer>
-    </MudMainContent>
+    <LoadingOverlay IsActive="@loading">
+        <MudAppBar Elevation="5">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+            <MudSpacer />
+            <MudText Class="align-self-center pt-2" Style="text-align: center; font-size:30px" Color="Color.Secondary">Könyvtár Menedzser</MudText>
+            <MudSpacer />
+            <MudImage Src="Images/Logo.png" Width="50" Height="40" Alt="Logo" Class="rounded-lg" />
+        </MudAppBar>
+        <MudDrawer @bind-Open="@isDrawerOpen" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Mini">
+            <MudDrawerHeader Class="d-flex flex-column align-self-center">
+                <div Class="py-5">
+                    <MudAvatar Size="Size.Large" Class="align-self-center" Style="@GetAvatarSize()" Color="Color.Secondary" Variant="Variant.Filled">
+                        <MudIcon Color="Color.Warning" Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" />
+                    </MudAvatar>
+                    @if (isDrawerOpen)
+                    {
+                        <MudText Class="align-self-center pt-2" Style="text-align: center;" Color="Color.Secondary">Admin</MudText>
+                    }
+                </div>
+            </MudDrawerHeader>
+            <MudNavMenu Color="Color.Success">
+                <MudNavLink Href="/Members" Icon="@Icons.Material.Filled.MenuBook" Match="NavLinkMatch.Prefix">Tagok</MudNavLink>
+                <MudNavLink Href="/Books" Icon="@Icons.Material.Filled.Person" Match="NavLinkMatch.All">Könyvek</MudNavLink>
+                <MudNavLink Href="/BookBorrow" Icon="@Icons.Material.Filled.ReadMore" Match="NavLinkMatch.All">Kiadás</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+        <MudMainContent Class="pt-16 px-16">
+            <MudContainer Class="mt-6">
+                @Body
+            </MudContainer>
+        </MudMainContent>
+    </LoadingOverlay>
 </MudLayout>
 
 <style>

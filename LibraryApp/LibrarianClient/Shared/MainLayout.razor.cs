@@ -1,10 +1,14 @@
-﻿using MudBlazor;
+﻿using EventAggregator.Blazor;
+using LibrarianClient.Data;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace LibrarianClient.Shared
 {
-    public partial class MainLayout
+    public partial class MainLayout : IHandle<LoadEvent>
     {
         private bool isDrawerOpen = true;
+        private bool loading = false;
 
         private MudTheme myCustomTheme = new MudTheme()
         {
@@ -28,8 +32,22 @@ namespace LibrarianClient.Shared
                 Surface = "#263238ff",
                 TableStriped = "#37474fff",
                 TableLines = "#424242ff",
-			},
+            },
         };
+
+        [Inject]
+        public IEventAggregator? EventHandler { get; set; }
+
+        public async Task HandleAsync(LoadEvent msg)
+        {
+            loading = msg.State;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        protected override void OnInitialized()
+        {
+            EventHandler!.Subscribe(this);
+        }
 
         private void ToggleDrawer()
         {

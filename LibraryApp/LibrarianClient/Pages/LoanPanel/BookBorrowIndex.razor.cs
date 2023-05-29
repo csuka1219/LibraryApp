@@ -1,4 +1,6 @@
-﻿using LibrarianClient.Services;
+﻿using EventAggregator.Blazor;
+using LibrarianClient.Data;
+using LibrarianClient.Services;
 using Library;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -28,8 +30,12 @@ namespace LibrarianClient.Pages.LoanPanel
         [Inject]
         private IDialogService? DialogService { get; set; }
 
+        [Inject]
+        private IEventAggregator? EventHandler { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
+            await FrontendHelper.StartLoading(EventHandler!);
             loans = await LoanService!.GetAllLoanAsync() ?? new List<Loan>();
             allBooks = await BookService!.GetAllBookAsync() ?? new List<Book>();
             availableBooks = new List<Book>(allBooks
@@ -38,6 +44,7 @@ namespace LibrarianClient.Pages.LoanPanel
                 .ToList());
             members = await LibraryMemberService!.GetAllLibraryMemberAsync() ?? new List<LibraryMember>();
             selectedMemberBooks = new List<Book>();
+            await FrontendHelper.StopLoading(EventHandler!);
         }
 
         private void MemberSelectionValueChange(LibraryMember selectedMember)
@@ -60,7 +67,6 @@ namespace LibrarianClient.Pages.LoanPanel
         private async void BorrowBook()
         {
             // TODO selectedMember null snackbar
-            // TODO loading screen
             if (selectedMember is null)
             {
                 return;
@@ -80,12 +86,14 @@ namespace LibrarianClient.Pages.LoanPanel
                 return;
             }
 
+            await FrontendHelper.StartLoading(EventHandler!);
             await LoanService!.AddLoanAsync(newLoan);
             loans.Add(newLoan);
             availableBooks.Remove(selectedBook);
             selectedMemberBooks.Add(selectedBook);
             selectedBookIndex = -1;
             StateHasChanged();
+            await FrontendHelper.StopLoading(EventHandler!);
         }
 
         private async Task<bool> ShowBorrowDialog(Loan newLoan)
@@ -102,12 +110,12 @@ namespace LibrarianClient.Pages.LoanPanel
         private async void ReturnBook()
         {
             // TODO selectedMember null snackbar
-            // TODO loading screen
             if (selectedMember is null)
             {
                 return;
             }
 
+            await FrontendHelper.StartLoading(EventHandler!);
             Book selectedBook = selectedMemberBooks[(int)selectedMemberBookIndex];
             Loan loan = loans.First(l => l.ReaderNumber == selectedMember.ReaderNumber && l.InvNumber == selectedBook.InvNumber);
             await LoanService!.DeleteLoanAsync(loan.Id);
@@ -116,6 +124,7 @@ namespace LibrarianClient.Pages.LoanPanel
             availableBooks.Add(selectedBook);
             selectedMemberBookIndex = -1;
             StateHasChanged();
+            await FrontendHelper.StopLoading(EventHandler!);
         }
     }
 }

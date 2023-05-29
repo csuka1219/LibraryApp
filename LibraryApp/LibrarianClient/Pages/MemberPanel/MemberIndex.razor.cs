@@ -1,4 +1,6 @@
-﻿using LibrarianClient.Pages.BookPanel;
+﻿using EventAggregator.Blazor;
+using LibrarianClient.Data;
+using LibrarianClient.Pages.BookPanel;
 using LibrarianClient.Services;
 using Library;
 using Microsoft.AspNetCore.Components;
@@ -25,8 +27,12 @@ namespace LibrarianClient.Pages.MemberPanel
         [Inject]
         private IDialogService? DialogService { get; set; }
 
+        [Inject]
+        private IEventAggregator? EventHandler { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
+            await FrontendHelper.StartLoading(EventHandler!);
             libraryMembers = await LibraryMemberService!.GetAllLibraryMemberAsync();
             if (libraryMembers is not null)
             {
@@ -37,6 +43,7 @@ namespace LibrarianClient.Pages.MemberPanel
             }
 
             await FillLoanData();
+            await FrontendHelper.StopLoading(EventHandler!);
         }
 
         private async Task FillLoanData()
@@ -71,11 +78,13 @@ namespace LibrarianClient.Pages.MemberPanel
 
             if (!result.Canceled)
             {
+                await FrontendHelper.StartLoading(EventHandler!);
                 int newReaderNumber = await LibraryMemberService!.AddLibraryMemberAsync(member);
                 member.ReaderNumber = newReaderNumber;
                 libraryMembers!.Add(member);
                 extraInfoHelper.Add(member.ReaderNumber, false);
                 StateHasChanged();
+                await FrontendHelper.StopLoading(EventHandler!);
             }
         }
 
@@ -89,8 +98,10 @@ namespace LibrarianClient.Pages.MemberPanel
 
             if (!result.Canceled)
             {
+                await FrontendHelper.StartLoading(EventHandler!);
                 await LibraryMemberService!.UpdateLibraryMemberAsync(member.ReaderNumber, member);
                 StateHasChanged();
+                await FrontendHelper.StopLoading(EventHandler!);
             }
         }
 
@@ -101,21 +112,12 @@ namespace LibrarianClient.Pages.MemberPanel
 
         private async void DeleteMember(LibraryMember libraryMember)
         {
+            await FrontendHelper.StartLoading(EventHandler!);
             await LibraryMemberService!.DeleteLibraryMemberAsync(libraryMember.ReaderNumber);
             libraryMembers!.Remove(libraryMember);
             extraInfoHelper.Remove(libraryMember.ReaderNumber);
             StateHasChanged();
+            await FrontendHelper.StopLoading(EventHandler!);
         }
-    }
-
-    public class LoanData
-    {
-        public int ReaderId { get; set; }
-
-        public string Title { get; set; } = string.Empty;
-
-        public DateTime LoanDate { get; set; }
-
-        public DateTime ReturnDeadline { get; set; }
     }
 }
