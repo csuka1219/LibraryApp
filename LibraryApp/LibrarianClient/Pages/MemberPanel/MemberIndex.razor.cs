@@ -29,6 +29,8 @@ namespace LibrarianClient.Pages.MemberPanel
 
         [Inject]
         private IEventAggregator? EventHandler { get; set; }
+        [Inject]
+        private ISnackbar? Snackbar { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -68,40 +70,56 @@ namespace LibrarianClient.Pages.MemberPanel
 
         private async void AddMember()
         {
-            LibraryMember member = new LibraryMember();
-            member.ReaderNumber = 0;
-            DialogParameters parameters = new DialogParameters { ["Member"] = member };
-
-            IDialogReference dialog = await DialogService!.ShowAsync<MemberAddDialog>("Hozzáadás", parameters);
-
-            DialogResult result = await dialog.Result;
-
-            if (!result.Canceled)
+            try
             {
-                await FrontendHelper.StartLoading(EventHandler!);
-                int newReaderNumber = await LibraryMemberService!.AddLibraryMemberAsync(member);
-                member.ReaderNumber = newReaderNumber;
-                libraryMembers!.Add(member);
-                extraInfoHelper.Add(member.ReaderNumber, false);
-                StateHasChanged();
-                await FrontendHelper.StopLoading(EventHandler!);
+                LibraryMember member = new LibraryMember();
+                member.ReaderNumber = 0;
+                DialogParameters parameters = new DialogParameters { ["Member"] = member };
+
+                IDialogReference dialog = await DialogService!.ShowAsync<MemberAddDialog>("Hozzáadás", parameters);
+
+                DialogResult result = await dialog.Result;
+
+                if (!result.Canceled)
+                {
+                    await FrontendHelper.StartLoading(EventHandler!);
+                    int newReaderNumber = await LibraryMemberService!.AddLibraryMemberAsync(member);
+                    member.ReaderNumber = newReaderNumber;
+                    libraryMembers!.Add(member);
+                    extraInfoHelper.Add(member.ReaderNumber, false);
+                    StateHasChanged();
+                    await FrontendHelper.StopLoading(EventHandler!);
+                    Snackbar!.Add("Az új tag hozzáadása sikeres volt", Severity.Success);
+                }
+            }
+            catch (Exception)
+            {
+                Snackbar!.Add("Hiba történt az új tag felvitele közben", Severity.Error);
             }
         }
 
         private async void EditMember(LibraryMember member)
         {
-            DialogParameters parameters = new DialogParameters { ["Member"] = member };
-
-            IDialogReference dialog = await DialogService!.ShowAsync<MemberAddDialog>("Szerkesztés", parameters);
-
-            DialogResult result = await dialog.Result;
-
-            if (!result.Canceled)
+            try
             {
-                await FrontendHelper.StartLoading(EventHandler!);
-                await LibraryMemberService!.UpdateLibraryMemberAsync(member.ReaderNumber, member);
-                StateHasChanged();
-                await FrontendHelper.StopLoading(EventHandler!);
+                DialogParameters parameters = new DialogParameters { ["Member"] = member };
+
+                IDialogReference dialog = await DialogService!.ShowAsync<MemberAddDialog>("Szerkesztés", parameters);
+
+                DialogResult result = await dialog.Result;
+
+                if (!result.Canceled)
+                {
+                    await FrontendHelper.StartLoading(EventHandler!);
+                    await LibraryMemberService!.UpdateLibraryMemberAsync(member.ReaderNumber, member);
+                    StateHasChanged();
+                    await FrontendHelper.StopLoading(EventHandler!);
+                    Snackbar!.Add("Az ügyfél módosítása sikeres volt", Severity.Success);
+                }
+            }
+            catch (Exception)
+            {
+                Snackbar!.Add("Hiba történt az ügyfél szerkesztése közben", Severity.Error);
             }
         }
 
@@ -112,12 +130,21 @@ namespace LibrarianClient.Pages.MemberPanel
 
         private async void DeleteMember(LibraryMember libraryMember)
         {
-            await FrontendHelper.StartLoading(EventHandler!);
-            await LibraryMemberService!.DeleteLibraryMemberAsync(libraryMember.ReaderNumber);
-            libraryMembers!.Remove(libraryMember);
-            extraInfoHelper.Remove(libraryMember.ReaderNumber);
-            StateHasChanged();
-            await FrontendHelper.StopLoading(EventHandler!);
+            try
+            {
+                await FrontendHelper.StartLoading(EventHandler!);
+                await LibraryMemberService!.DeleteLibraryMemberAsync(libraryMember.ReaderNumber);
+                libraryMembers!.Remove(libraryMember);
+                extraInfoHelper.Remove(libraryMember.ReaderNumber);
+                StateHasChanged();
+                await FrontendHelper.StopLoading(EventHandler!);
+                Snackbar!.Add("Az ügyfél törlése sikeres volt", Severity.Success);
+            }
+            catch (Exception)
+            {
+                Snackbar!.Add("Hiba az ügyfél törlése közben", Severity.Error);
+
+            }
         }
     }
 }

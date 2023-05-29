@@ -30,6 +30,9 @@ namespace LibrarianClient.Pages.BookPanel
         [Inject]
         private IEventAggregator? EventHandler { get; set; }
 
+        [Inject]
+        private ISnackbar? Snackbar { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             await FrontendHelper.StartLoading(EventHandler!);
@@ -68,34 +71,50 @@ namespace LibrarianClient.Pages.BookPanel
 
         private async void AddBook()
         {
-            Book book = new Book();
-            DialogParameters parameters = new DialogParameters { ["book"] = book };
-
-            IDialogReference dialog = await DialogService!.ShowAsync<BookAddDialog>("Hozzáadás", parameters);
-
-            DialogResult result = await dialog.Result;
-
-            if (!result.Canceled)
+            try
             {
-                await FrontendHelper.StartLoading(EventHandler!);
-                int newInvNumber = await BookService!.AddBookAsync(book);
-                StateHasChanged();
-                book.InvNumber = newInvNumber;
-                books.Add(book);
-                booksBackUp.Add(book);
-                StateHasChanged();
-                await FrontendHelper.StopLoading(EventHandler!);
+                Book book = new Book();
+                DialogParameters parameters = new DialogParameters { ["book"] = book };
+
+                IDialogReference dialog = await DialogService!.ShowAsync<BookAddDialog>("Hozzáadás", parameters);
+
+                DialogResult result = await dialog.Result;
+
+                if (!result.Canceled)
+                {
+                    await FrontendHelper.StartLoading(EventHandler!);
+                    int newInvNumber = await BookService!.AddBookAsync(book);
+                    StateHasChanged();
+                    book.InvNumber = newInvNumber;
+                    books.Add(book);
+                    booksBackUp.Add(book);
+                    StateHasChanged();
+                    await FrontendHelper.StopLoading(EventHandler!);
+                    Snackbar!.Add("A könyv hozzáadása sikeres volt", Severity.Success);
+                }
+            }
+            catch (Exception)
+            {
+                Snackbar!.Add("Hiba történt a könyv hozzáadása közben", Severity.Error);
             }
         }
 
         private async void DeleteBook(Book book)
         {
-            await FrontendHelper.StartLoading(EventHandler!);
-            await BookService!.DeleteBookAsync(book.InvNumber);
-            books.Remove(book);
-            booksBackUp.Remove(book);
-            StateHasChanged();
-            await FrontendHelper.StopLoading(EventHandler!);
+            try
+            {
+                await FrontendHelper.StartLoading(EventHandler!);
+                await BookService!.DeleteBookAsync(book.InvNumber);
+                books.Remove(book);
+                booksBackUp.Remove(book);
+                StateHasChanged();
+                await FrontendHelper.StopLoading(EventHandler!);
+                Snackbar!.Add("A könyv törlése sikeres volt", Severity.Success);
+            }
+            catch (Exception)
+            {
+                Snackbar!.Add("hiba történt a könyv törlése közben", Severity.Error);
+            }
         }
     }
 }

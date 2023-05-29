@@ -33,6 +33,9 @@ namespace LibrarianClient.Pages.LoanPanel
         [Inject]
         private IEventAggregator? EventHandler { get; set; }
 
+        [Inject]
+        private ISnackbar? Snackbar { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             await FrontendHelper.StartLoading(EventHandler!);
@@ -66,34 +69,42 @@ namespace LibrarianClient.Pages.LoanPanel
 
         private async void BorrowBook()
         {
-            // TODO selectedMember null snackbar
             if (selectedMember is null)
             {
+                Snackbar!.Add("Nincs kiválasztva ügyfél", Severity.Warning);
                 return;
             }
 
-            Book selectedBook = availableBooks[(int)selectedBookIndex];
-            Loan newLoan = new Loan()
+            try
             {
-                InvNumber = selectedBook.InvNumber,
-                ReaderNumber = selectedMember.ReaderNumber,
-                LoanDate = DateTime.Now,
-                returnDeadline = DateTime.Now.AddDays(1),
-            };
+                Book selectedBook = availableBooks[(int)selectedBookIndex];
+                Loan newLoan = new Loan()
+                {
+                    InvNumber = selectedBook.InvNumber,
+                    ReaderNumber = selectedMember.ReaderNumber,
+                    LoanDate = DateTime.Now,
+                    returnDeadline = DateTime.Now.AddDays(1),
+                };
 
-            if (await ShowBorrowDialog(newLoan))
-            {
-                return;
+                if (await ShowBorrowDialog(newLoan))
+                {
+                    return;
+                }
+
+                await FrontendHelper.StartLoading(EventHandler!);
+                await LoanService!.AddLoanAsync(newLoan);
+                loans.Add(newLoan);
+                availableBooks.Remove(selectedBook);
+                selectedMemberBooks.Add(selectedBook);
+                selectedBookIndex = -1;
+                StateHasChanged();
+                await FrontendHelper.StopLoading(EventHandler!);
+                Snackbar!.Add("A könyv kiadása sikeres volt", Severity.Success);
             }
-
-            await FrontendHelper.StartLoading(EventHandler!);
-            await LoanService!.AddLoanAsync(newLoan);
-            loans.Add(newLoan);
-            availableBooks.Remove(selectedBook);
-            selectedMemberBooks.Add(selectedBook);
-            selectedBookIndex = -1;
-            StateHasChanged();
-            await FrontendHelper.StopLoading(EventHandler!);
+            catch (Exception)
+            {
+                Snackbar!.Add("Hiba történt a könyv kiadása közben", Severity.Error);
+            }
         }
 
         private async Task<bool> ShowBorrowDialog(Loan newLoan)
@@ -109,22 +120,31 @@ namespace LibrarianClient.Pages.LoanPanel
 
         private async void ReturnBook()
         {
-            // TODO selectedMember null snackbar
             if (selectedMember is null)
             {
+                Snackbar!.Add("Nincs kiválasztva ügyfél", Severity.Warning);
                 return;
             }
 
-            await FrontendHelper.StartLoading(EventHandler!);
-            Book selectedBook = selectedMemberBooks[(int)selectedMemberBookIndex];
-            Loan loan = loans.First(l => l.ReaderNumber == selectedMember.ReaderNumber && l.InvNumber == selectedBook.InvNumber);
-            await LoanService!.DeleteLoanAsync(loan.Id);
-            loans.Remove(loan);
-            selectedMemberBooks.Remove(selectedBook);
-            availableBooks.Add(selectedBook);
-            selectedMemberBookIndex = -1;
-            StateHasChanged();
-            await FrontendHelper.StopLoading(EventHandler!);
+            try
+            {
+                await FrontendHelper.StartLoading(EventHandler!);
+                Book selectedBook = selectedMemberBooks[(int)selectedMemberBookIndex];
+                Loan loan = loans.First(l => l.ReaderNumber == selectedMember.ReaderNumber && l.InvNumber == selectedBook.InvNumber);
+                await LoanService!.DeleteLoanAsync(loan.Id);
+                loans.Remove(loan);
+                selectedMemberBooks.Remove(selectedBook);
+                availableBooks.Add(selectedBook);
+                selectedMemberBookIndex = -1;
+                StateHasChanged();
+                await FrontendHelper.StopLoading(EventHandler!);
+                Snackbar!.Add("A könyv visszavétele sikeres volt", Severity.Success);
+            }
+            catch (Exception)
+            {
+                Snackbar!.Add("Hiba történt a könyv visszavétele közben", Severity.Error);
+
+            }
         }
     }
 }
