@@ -1,0 +1,21 @@
+﻿@using Library;
+<MudDialog>
+	<TitleContent>
+		<MudText Typo="Typo.h6">
+			Könyv ügyfélhez rendelése
+		</MudText>
+	</TitleContent>
+	<DialogContent>
+		<MudForm @ref="@form" Model="@Loan" @bind-IsValid="@success">
+			<MudGrid>
+				<MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+					<MudDatePicker Label="Határidő" IsDateDisabledFunc="(e)=>e.Date < DateTime.Today" @bind-Date="@tmpReturnDeadLine"></MudDatePicker>
+				</MudItem>
+			</MudGrid>
+		</MudForm>
+	</DialogContent>
+	<DialogActions>
+		<MudButton Variant="Variant.Filled" OnClick="Cancel" Color="Color.Info">Bezár</MudButton>
+		<MudButton Variant="Variant.Filled" OnClick="Save" Color="Color.Primary">Mentés</MudButton>
+	</DialogActions>
+</MudDialog>

@@ -1,0 +1,51 @@
+﻿@page "/BookBorrow"
+@using Library;
+
+<MudPaper Elevation="5" Class="mb-5">
+    <div class="mud-card-content">
+        <MudSelect T="LibraryMember" Label="Ügyfél" ValueChanged="(e)=>MemberSelectionValueChange(e)">
+            @foreach(LibraryMember member in members)
+            {
+                <MudSelectItem Value="member">@member.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </div>
+</MudPaper>
+<MudGrid>
+    <MudItem xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+        <MudPaper>
+            <div class="mud-list-subheader mud-list-subheader-gutters custom-list">
+                <MudText Typo="Typo.h4">Raktáron lévő könyvek</MudText>
+            </div>
+            <div class="mud-card-content">
+                <MudList Style="height:40vh" Class="overflow-auto" Clickable="true" @bind-SelectedValue="selectedBookIndex" Color="Color.Primary">
+                    @for(int i = 0; i < availableBooks.Count; i++)
+                    {
+                        <MudListItem Text="@availableBooks[i].Title" Value="@i" />
+                    }
+                </MudList>
+                <div class="center-container">
+                    <MudButton Variant="Variant.Filled" OnClick="BorrowBook" Disabled="@(selectedBookIndex is -1)" Color="Color.Primary">Könyv kiadása</MudButton>
+                </div>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+        <MudPaper>
+            <div class="mud-list-subheader mud-list-subheader-gutters custom-list">
+                <MudText Typo="Typo.h4">Ügyfélnél lévő könyvek</MudText>
+            </div>
+            <div class="mud-card-content">
+                <MudList Style="height:40vh" Class="overflow-auto" Clickable="true" @bind-SelectedValue="selectedMemberBookIndex" Color="Color.Primary">
+                    @for (int i = 0; i < selectedMemberBooks.Count; i++)
+                    {
+                        <MudListItem Text="@selectedMemberBooks[i].Title" Value="@i" />
+                    }
+                </MudList>
+                <div class="center-container">
+                    <MudButton Variant="Variant.Filled" OnClick="ReturnBook" Disabled="@(selectedMemberBookIndex is -1)" Color="Color.Primary">Könyv visszavétele</MudButton>
+                </div>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
