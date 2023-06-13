@@ -9,5 +9,5 @@ olvasó lekérheti a kölcsönözhető és kikölcsönzött könyvek listáját.
 Az alkalmazás backend-jét egy SQL
 adatbázis alkotja, ebben tárolja az adatokat amit egy Web API applikáció endpoint-jain keresztül
 módosíthatunk és érhetünk el. Az API-n keresztül kell történjen minden adattal kapcsolatos művelet és
-lekérdezés.
-
+lekérdezés.  
+#### Adatbázis létrehozásához: dotnet ef database update futtatása szükséges, az api mappájában.
