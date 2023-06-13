@@ -36,18 +36,31 @@ namespace LibrarianClient.Pages.LoanPanel
         [Inject]
         private ISnackbar? Snackbar { get; set; }
 
+        [Inject]
+        private NavigationManager? NavManager { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            await FrontendHelper.StartLoading(EventHandler!);
-            loans = await LoanService!.GetAllLoanAsync() ?? new List<Loan>();
-            allBooks = await BookService!.GetAllBookAsync() ?? new List<Book>();
-            availableBooks = new List<Book>(allBooks
-                .Where(b => !loans.Select(l => l.InvNumber).Contains(b.InvNumber))
-                .OrderBy(ab => ab.Title)
-                .ToList());
-            members = await LibraryMemberService!.GetAllLibraryMemberAsync() ?? new List<LibraryMember>();
-            selectedMemberBooks = new List<Book>();
-            await FrontendHelper.StopLoading(EventHandler!);
+            try
+            {
+                await FrontendHelper.StartLoading(EventHandler!);
+                loans = await LoanService!.GetAllLoanAsync() ?? new List<Loan>();
+                allBooks = await BookService!.GetAllBookAsync() ?? new List<Book>();
+                availableBooks = new List<Book>(allBooks
+                    .Where(b => !loans.Select(l => l.InvNumber).Contains(b.InvNumber))
+                    .OrderBy(ab => ab.Title)
+                    .ToList());
+                members = await LibraryMemberService!.GetAllLibraryMemberAsync() ?? new List<LibraryMember>();
+                selectedMemberBooks = new List<Book>();
+            }
+            catch (Exception)
+            {
+                NavManager!.NavigateTo("/Notfound");
+            }
+            finally
+            {
+                await FrontendHelper.StopLoading(EventHandler!);
+            }
         }
 
         private void MemberSelectionValueChange(LibraryMember selectedMember)

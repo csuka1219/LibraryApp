@@ -1,7 +1,8 @@
-﻿@page "/Books"
+﻿@page "/"
+@page "/Books"
 <MudPaper Elevation="5">
 	<div class="mud-card-content">
-		<MudTable Items="@books" Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
+		<MudTable Items="@books" Height="60vh" FixedHeader Dense Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
 			<ToolBarContent>
 				<MudText Typo="Typo.h6">Könyvek</MudText>
 				<MudFab Color="Color.Primary" Style="margin-left: 10px;" OnClick="AddBook" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" />
@@ -28,6 +29,9 @@
 					<MudFab Color="Color.Error" OnClick = '()=>DeleteBook(context)' Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" />
 				</MudTd>
 			</RowTemplate>
+			<PagerContent>
+				<MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }" RowsPerPageString="Sorok száma oldalanként" HorizontalAlignment="HorizontalAlignment.Right" />
+			</PagerContent>
 		</MudTable>
 	</div>
 </MudPaper>

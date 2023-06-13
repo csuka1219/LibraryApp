@@ -2,7 +2,7 @@
 
 <MudPaper Elevation="5">
 	<div class="mud-card-content">
-		<MudTable Items="@libraryMembers" Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
+		<MudTable Items="@libraryMembers" Height="60vh" FixedHeader Dense Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
 			<ToolBarContent>
 				<MudText Typo="Typo.h6">Tagok</MudText>
 				<MudFab Color="Color.Primary" Style="margin-left: 10px;" OnClick='()=>AddMember()' Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" />
@@ -58,6 +58,9 @@
 						</td>
 				}
 			</ChildRowContent>
+			<PagerContent>
+				<MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }" RowsPerPageString="Sorok száma oldalanként" HorizontalAlignment="HorizontalAlignment.Right" />
+			</PagerContent>
 		</MudTable>
 	</div>
 </MudPaper>

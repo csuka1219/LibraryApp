@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library", "Library\Library.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryWebApiTests", "LibraryWebApiTests\LibraryWebApiTests.csproj", "{1F86D641-F7A3-4ADF-93A1-A54E0EF5AF1E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrarianClientTests", "LibrarianClientTests\LibrarianClientTests.csproj", "{D8374B44-534C-4788-8280-725CB623F163}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1F86D641-F7A3-4ADF-93A1-A54E0EF5AF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F86D641-F7A3-4ADF-93A1-A54E0EF5AF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F86D641-F7A3-4ADF-93A1-A54E0EF5AF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8374B44-534C-4788-8280-725CB623F163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8374B44-534C-4788-8280-725CB623F163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8374B44-534C-4788-8280-725CB623F163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8374B44-534C-4788-8280-725CB623F163}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

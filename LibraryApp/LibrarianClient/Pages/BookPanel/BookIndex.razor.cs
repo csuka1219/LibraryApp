@@ -33,14 +33,27 @@ namespace LibrarianClient.Pages.BookPanel
         [Inject]
         private ISnackbar? Snackbar { get; set; }
 
+        [Inject]
+        private NavigationManager? NavManager { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            await FrontendHelper.StartLoading(EventHandler!);
-            books = await BookService!.GetAllBookAsync() ?? new List<Book>();
-            loans = await LoanService!.GetAllLoanAsync() ?? new List<Loan>();
-            members = await LibraryMemberService!.GetActiveLibraryMembersAsync() ?? new List<LibraryMember>();
-            booksBackUp = new List<Book>(books);
-            await FrontendHelper.StopLoading(EventHandler!);
+            try
+            {
+                await FrontendHelper.StartLoading(EventHandler!);
+                books = await BookService!.GetAllBookAsync() ?? new List<Book>();
+                loans = await LoanService!.GetAllLoanAsync() ?? new List<Loan>();
+                members = await LibraryMemberService!.GetActiveLibraryMembersAsync() ?? new List<LibraryMember>();
+                booksBackUp = new List<Book>(books);
+            }
+            catch (Exception)
+            {
+                NavManager!.NavigateTo("/Notfound");
+            }
+            finally
+            {
+                await FrontendHelper.StopLoading(EventHandler!);
+            }
         }
 
         private void OnBookSearch(string text)

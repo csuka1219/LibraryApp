@@ -29,23 +29,37 @@ namespace LibrarianClient.Pages.MemberPanel
 
         [Inject]
         private IEventAggregator? EventHandler { get; set; }
+
         [Inject]
         private ISnackbar? Snackbar { get; set; }
 
+        [Inject]
+        private NavigationManager? NavManager { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            await FrontendHelper.StartLoading(EventHandler!);
-            libraryMembers = await LibraryMemberService!.GetAllLibraryMemberAsync();
-            if (libraryMembers is not null)
+            try
             {
-                foreach (LibraryMember member in libraryMembers)
+                await FrontendHelper.StartLoading(EventHandler!);
+                libraryMembers = await LibraryMemberService!.GetAllLibraryMemberAsync();
+                if (libraryMembers is not null)
                 {
-                    extraInfoHelper.Add(member.ReaderNumber, false);
+                    foreach (LibraryMember member in libraryMembers)
+                    {
+                        extraInfoHelper.Add(member.ReaderNumber, false);
+                    }
                 }
-            }
 
-            await FillLoanData();
-            await FrontendHelper.StopLoading(EventHandler!);
+                await FillLoanData();
+            }
+            catch (Exception)
+            {
+                NavManager!.NavigateTo("/Notfound");
+            }
+            finally
+            {
+                await FrontendHelper.StopLoading(EventHandler!);
+            }
         }
 
         private async Task FillLoanData()
