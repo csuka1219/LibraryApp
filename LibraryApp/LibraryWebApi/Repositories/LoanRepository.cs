@@ -23,10 +23,11 @@ namespace LibraryWebApi.Repositories
             return await _context.Loans.FindAsync(id);
         }
 
-        public async Task AddLoanAsync(Loan loan)
+        public async Task<int> AddLoanAsync(Loan loan)
         {
             _context.Loans.Add(loan);
             await _context.SaveChangesAsync();
+            return await _context.Loans.MaxAsync(b => b.Id);
         }
 
         public async Task UpdateLoanAsync(Loan loan)

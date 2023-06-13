@@ -8,7 +8,7 @@ namespace LibraryWebApi.Repositories
 
         Task<Loan> GetLoanByIdAsync(int id);
 
-        Task AddLoanAsync(Loan loan);
+        Task<int> AddLoanAsync(Loan loan);
 
         Task UpdateLoanAsync(Loan loan);
 

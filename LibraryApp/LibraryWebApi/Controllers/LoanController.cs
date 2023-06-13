@@ -42,8 +42,7 @@ namespace LibraryWebApi.Controllers
                 return BadRequest("Return deadline must be later than or equal to the loan date");
             }
 
-            await _loanRepository.AddLoanAsync(loan);
-            return Ok();
+            return Ok(await _loanRepository.AddLoanAsync(loan));
         }
 
         [HttpPut("{id}")]
