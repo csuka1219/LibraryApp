@@ -1,0 +1,30 @@
+﻿.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.custom-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0px;
+    text-align: center;
+}
+
+.custom-list .mud-text {
+    color: white;
+    font-weight: 600;
+}
+
+.custom-list .mud-list-item {
+    color: white;
+    font-weight: 400;
+}
+
+@media (max-width: 600px) {
+    .custom-list .mud-text {
+        font-size: 20px;
+    }
+}

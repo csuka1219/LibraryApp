@@ -1,0 +1,64 @@
+﻿@page "/BookBorrow"
+@using Library;
+
+<MudPaper Elevation="5" Class="mb-5">
+    <div class="mud-card-content">
+            <div class="mud-list-subheader mud-list-subheader-gutters custom-list">
+                 <MudText Typo="Typo.h4">Add meg a neved:</MudText>
+            </div>
+        <MudSelect T="LibraryMember" Label="Válaszd ki a neved" ValueChanged="(e) => MemberSelectionValueChange(e)">
+            @foreach (LibraryMember member in members)
+            {
+                <MudSelectItem Value="member">@member.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </div>
+</MudPaper>
+<MudPaper Elevation="10">
+    <div class="mud-card-content">
+        <ToolBarContent>
+                     <div class="mud-list-subheader mud-list-subheader-gutters custom-list">
+                                            <MudText Typo="Typo.h4">Kölcsönzött Könyveim</MudText>
+                                        </div>
+            <MudText Typo="Typo.h6">Részletek:</MudText>
+        </ToolBarContent>
+        @if (selectedMemberBooks.Count > 0)
+        {
+            <HeaderContent>
+                <div class="row">
+                    <div class="col-md-1">Leltári szám</div>
+                    <div class="col-md-2">Cím</div>
+                    <div class="col-md-2">Író</div>
+                    <div class="col-md-1">Kiadó</div>
+                    <div class="col-md-1">Megjelenés éve</div>
+                    <div class="col-md-1">Státusz</div>
+                    <div class="col-md-2">Kölcsönző</div>
+                    <div class="col-md-2">Határidő</div>
+                </div>
+            </HeaderContent>
+            @foreach (var book in selectedMemberBooks)
+            {
+                <RowTemplate>
+                    <div class="row">
+                        <div class="col-md-1" DataLabel="Leltári szám">@book.InvNumber</div>
+                        <div class="col-md-2" DataLabel="Cím">@book.Title</div>
+                        <div class="col-md-2" DataLabel="Író">@book.Author</div>
+                        <div class="col-md-1" DataLabel="Kiadó">@book.Publisher</div>
+                        <div class="col-md-1" DataLabel="Megjelenés éve">@book.Year</div>
+                        <div class="col-md-1" DataLabel="Státusz">@GetBookStatus(book.InvNumber)</div>
+                        <div class="col-md-2" DataLabel="Kölcsönző">@GetBookRenter(book.InvNumber)</div>
+                        <div class="col-md-2" DataLabel="Határidő">@GetBookDeadline(book.InvNumber)</div>
+                    </div>
+                </RowTemplate>
+            }
+        }
+        else
+        {
+            <p>Nincsenek kölcsönzött könyvek.</p>
+        }
+        <ChildRowContent></ChildRowContent>
+    </div>
+</MudPaper>
+
+
+
