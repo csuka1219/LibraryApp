@@ -26,7 +26,7 @@
 				<MudTd DataLabel="Megjelenés Éve">@context.Year</MudTd>
 				<MudTd DataLabel="" Style="text-align:end">
 					<MudFab Color="Color.Info" OnClick='()=>GetBookDetails(context.InvNumber)' Size="Size.Small" StartIcon="@Icons.Material.Filled.RemoveRedEye" />
-					<MudFab Color="Color.Error" OnClick = '()=>DeleteBook(context)' Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" />
+					<MudFab Color="Color.Error" OnClick='()=>DeleteBook(context)' Disabled="loans.Any(l => l.InvNumber == context.InvNumber)" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" />
 				</MudTd>
 			</RowTemplate>
 			<PagerContent>

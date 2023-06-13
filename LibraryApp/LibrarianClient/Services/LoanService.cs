@@ -25,12 +25,12 @@ namespace LibrarianClient.Services
         public async Task DeleteLoanAsync(int id) =>
             await httpClient.DeleteAsync($"Loan/{id}");
 
-        public async Task<int> AddLoanAsync(Loan person) 
+        public async Task<int> AddLoanAsync(Loan loan) 
         {
             HttpResponseMessage response;
             try
             {
-                response = await httpClient.PostAsJsonAsync("Book", person);
+                response = await httpClient.PostAsJsonAsync("Loan", loan);
                 return await response.Content.ReadFromJsonAsync<int>();
             }
             catch (JsonException)
