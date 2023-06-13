@@ -1,0 +1,30 @@
+﻿@page "/Books"
+<MudPaper Elevation="5">
+    <div class="mud-card-content">
+        <MudTable Items="@books" Striped Hover="true" Breakpoint="Breakpoint.Xs" Elevation="0">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Könyvek</MudText>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Leltári szám</MudTh>
+                <MudTh>Cím</MudTh>
+                <MudTh>Író</MudTh>
+                <MudTh>Kiadó</MudTh>
+                <MudTh>Megjelenés Éve</MudTh>
+                <MudTh>Státusz</MudTh>
+                <MudTh>Kivette</MudTh>
+                <MudTh>Határidő</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Leltári szám">@context.InvNumber</MudTd>
+                <MudTd DataLabel="Cím">@context.Title</MudTd>
+                <MudTd DataLabel="Író">@context.Author</MudTd>
+                <MudTd DataLabel="Kiadó">@context.Publisher</MudTd>
+                <MudTd DataLabel="Megjelenés Éve">@context.Year</MudTd>
+                <MudTd DataLabel="Státusz">@GetBookStatus(context.InvNumber)</MudTd>
+                <MudTd DataLabel="Kivette">@GetBookRenter(context.InvNumber)</MudTd>
+                <MudTd DataLabel="Határidő">@GetBookDeadline(context.InvNumber)</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </div>
+</MudPaper>
