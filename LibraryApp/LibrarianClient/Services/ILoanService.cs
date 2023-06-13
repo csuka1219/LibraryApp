@@ -12,6 +12,6 @@ namespace LibrarianClient.Services
 
         Task DeleteLoanAsync(int id);
 
-        Task AddLoanAsync(Loan person);
+        Task<int> AddLoanAsync(Loan person);
     }
 }

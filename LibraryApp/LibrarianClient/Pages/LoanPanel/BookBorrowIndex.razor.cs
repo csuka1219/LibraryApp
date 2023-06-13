@@ -105,7 +105,7 @@ namespace LibrarianClient.Pages.LoanPanel
                 }
 
                 await FrontendHelper.StartLoading(EventHandler!);
-                await LoanService!.AddLoanAsync(newLoan);
+                newLoan.Id = await LoanService!.AddLoanAsync(newLoan);
                 loans.Add(newLoan);
                 availableBooks.Remove(selectedBook);
                 selectedMemberBooks.Add(selectedBook);

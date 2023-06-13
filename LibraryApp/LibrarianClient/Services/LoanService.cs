@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 using Library;
 
 namespace LibrarianClient.Services
@@ -24,7 +25,23 @@ namespace LibrarianClient.Services
         public async Task DeleteLoanAsync(int id) =>
             await httpClient.DeleteAsync($"Loan/{id}");
 
-        public async Task AddLoanAsync(Loan person) =>
-            await httpClient.PostAsJsonAsync("Loan", person);
+        public async Task<int> AddLoanAsync(Loan person) 
+        {
+            HttpResponseMessage response;
+            try
+            {
+                response = await httpClient.PostAsJsonAsync("Book", person);
+                return await response.Content.ReadFromJsonAsync<int>();
+            }
+            catch (JsonException)
+            {
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
     }
 }
