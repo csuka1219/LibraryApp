@@ -1,21 +1,46 @@
-﻿@inherits LayoutComponentBase
+﻿@using ReaderClient.Component
+@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider Theme="myCustomTheme" IsDarkMode="false"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudLayout>
+    <LoadingOverlay IsActive="@loading">
+        <MudAppBar Elevation="5">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+            <MudSpacer />
+            <MudText Class="align-self-center pt-2" Style="text-align: center; font-size:30px" Color="Color.Primary">Könyvtár Kliens</MudText>
+            <MudSpacer />
+            <MudImage Src="Images/Logo.png" Width="50" Height="40" Alt="Logo" Class="rounded-lg" />
+        </MudAppBar>
+        <MudDrawer @bind-Open="@isDrawerOpen" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Mini">
+            <MudDrawerHeader Class="d-flex flex-column align-self-center">
+                <div Class="py-5">
+                    <MudAvatar Size="Size.Large" Class="align-self-center" Style="@GetAvatarSize()" Color="Color.Secondary" Variant="Variant.Filled">
+                        <MudIcon Color="Color.Warning" Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" />
+                    </MudAvatar>
+                    @if (isDrawerOpen)
+                    {
+                        <MudText Class="align-self-center pt-2" Style="text-align: center;" Color="Color.Secondary">Könyvtár</MudText>
+                    }
+                </div>
+            </MudDrawerHeader>
+            <MudNavMenu Color="Color.Success">
+                <MudNavLink Href="/Books" Icon="@Icons.Material.Filled.MenuBook" Match="NavLinkMatch.All">Könyvek</MudNavLink>
+                <MudNavLink Href="/BookBorrow" Icon="@Icons.Material.Filled.ReadMore" Match="NavLinkMatch.All">Kölcsönzéseim</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+        <MudMainContent Class="pt-16 px-16">
+            <MudContainer Class="mt-6">
+                @Body
+            </MudContainer>
+        </MudMainContent>
+    </LoadingOverlay>
+</MudLayout>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+<style>
+    a:hover {
+        color: #00c264 !important;
+    }
+</style>
